@@ -14,36 +14,23 @@ app.factory("twitchAPI", ['$http', function($http){
   return twitchObj;
 }]);
 
-app.filter('orderObjectBy', function() {
-  return function(items, field, reverse) {
-    var filtered = [];
-    angular.forEach(items, function(item) {
-      filtered.push(item);
-    });
-    filtered.sort(function (a, b) {
-      return (a[field] > b[field] ? 1 : -1);
-    });
-    if(reverse) filtered.reverse();
-    return filtered;
-  };
-});
-
 app.controller('twitchTVController', ['$scope', 'twitchAPI', function($scope, twitchAPI){
   $scope.streamers = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
-  $scope.streamersData = {};
+  $scope.streamersData = [];
   $scope.selected = "all";
 
   for(var i = 0; i < $scope.streamers.length; i++){
-    streamer = $scope.streamers[i];
+    var streamer = $scope.streamers[i];
 
     twitchAPI.getStreamers(streamer)
     .success(function(data){
       var streamer_split = data["_links"].channel.split("/"),
           streamer_name = streamer_split[streamer_split.length - 1];
-      $scope.streamersData[streamer_name] = [data];
+      $scope.streamersData[i] = data;
       twitchAPI.getChannelsData(streamer_name)
       .success(function(resp){
-          $scope.streamersData[streamer_name][1] = resp;
+          $.extend($scope.streamersData[i], { "channelData" : resp });
+          console.log($scope.streamersData);
       })
       .error(function(error){
         console.log(error)
