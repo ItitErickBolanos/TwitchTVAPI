@@ -1,0 +1,24 @@
+.container {
+  margin: 2em;
+}
+
+.online {
+  background: #009688;
+}
+
+.offline {
+  background: #757575;
+}
+
+md-list md-list-item.md-2-line .md-list-item-text p, md-list md-list-item.md-2-line .md-list-item-text h3{
+  color: white;
+}
+
+.md-no-sticky {
+  background: #01579B;
+  color: white;
+}
+
+html, body {
+  background-color: #E1F5FE;
+}

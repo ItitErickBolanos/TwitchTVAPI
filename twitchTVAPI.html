@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Twitch Streamers - FreeCodeCamp</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+        <link href="css/twitchTVAPI.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div class="container" ng-app="TwitchStreamers" ng-cloak>
+              <md-toolbar md-scroll-shrink ng-if="true">
+                <div class="md-toolbar-tools" layout="row">
+                  <div flex="5">
+                    <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png" width="40em" height="40em"/>
+                  </div>
+                  <div flex="25"  flex-offset="5">
+                    <h1>
+                      <span>TWITCH STREAMERS</span>
+                    </h1>
+                  </div>
+                  <div flex="50" flex-offset="15">
+                    <md-radio-group layout="row" class="md-primary md-hue-3" ng-model="selected" layout-align="end" style="font-size: 16px">
+                      <md-radio-button value="all">All</md-radio-button>
+                      <md-radio-button value="online">Online</md-radio-button>
+                      <md-radio-button value="offline">Offline</md-radio-button>
+                    </md-radio-group>
+                  </div>
+                </div>
+              </md-toolbar>
+              <md-content ng-controller="twitchTVController">
+                <md-list>
+                  <md-divider></md-divider>
+                  <md-list-item class="md-2-line" ng-repeat="streamer in streamersData" ng-class="streamer[0].stream == null ? 'offline' : 'online'">
+                    <img class="md-avatar" ng-src="{{ streamer[1].logo }}" />
+                    <div class="md-list-item-text">
+                      <h3>{{ streamer[1].name }}</h3>
+                      <p>{{ streamer[0].stream == null ? "Offline" : streamer[0].stream.game + " : " + streamer[0].stream.channel.status }} </p>
+                    </div>
+                    <md-divider></md-divider>
+                  </md-list-item>
+              </md-content>
+        </div>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+
+        <!-- Angular Material Library -->
+        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+        <script type="text/javascript" src="js/twitchTVAPI.js"></script>
+    </body>
+</html>
