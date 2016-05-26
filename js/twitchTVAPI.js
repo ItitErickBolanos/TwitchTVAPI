@@ -15,26 +15,39 @@ app.factory("twitchAPI", ['$http', function($http){
 }]);
 
 app.controller('twitchTVController', ['$scope', 'twitchAPI', function($scope, twitchAPI){
-  $scope.streamers = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
+  $scope.streamers = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin", "comster404"],
   $scope.streamersData = [];
-  $scope.selected = "all";
+  $scope.filterList = { selected : "all" };
 
   for(var i = 0; i < $scope.streamers.length; i++){
     var streamer = $scope.streamers[i];
 
     twitchAPI.getStreamers(streamer)
     .success(function(data){
-      var streamer_split = data["_links"].channel.split("/"),
-          streamer_name = streamer_split[streamer_split.length - 1];
-      $scope.streamersData[i] = data;
-      twitchAPI.getChannelsData(streamer_name)
-      .success(function(resp){
-          $.extend($scope.streamersData[i], { "channelData" : resp });
-          console.log($scope.streamersData);
-      })
-      .error(function(error){
-        console.log(error)
-      })
+      if (data.error == undefined) {
+        var streamer_split = data["_links"].channel.split("/"),
+            streamer_name = streamer_split[streamer_split.length - 1];
+        $scope.streamersData.push(data);
+        twitchAPI.getChannelsData(streamer_name)
+        .success(function(resp){
+            $.extend($scope.streamersData[$scope.streamersData.indexOf(data)], resp);
+            $.extend($scope.streamersData[$scope.streamersData.indexOf(data)], { online: data.stream != null ? "online" : "offline" });
+        })
+        .error(function(error){
+          console.log(error)
+        });
+      } else {
+        var streamer_split = data.message.split("'");
+            streamer_name = streamer_split[1];
+
+        $scope.streamersData.push({
+          name: streamer_name,
+          online: "offline",
+          url: "https://twitch.tv/" + streamer,
+          logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Question_mark_(black_on_white).png",
+          stream: "closed"
+        });
+      }
     })
     .error(function(error){
       console.log(error);

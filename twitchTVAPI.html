@@ -21,7 +21,7 @@
                         </h1>
                       </div>
                       <div flex="50" flex-offset="15" flex-md="50">
-                        <md-radio-group layout="row" class="md-primary md-hue-3" ng-model="selected" layout-align="end">
+                        <md-radio-group layout="row" class="md-primary md-hue-3" ng-model="filterList.selected" layout-align="end">
                           <md-radio-button value="all">All</md-radio-button>
                           <md-radio-button value="online">Online</md-radio-button>
                           <md-radio-button value="offline">Offline</md-radio-button>
@@ -32,11 +32,11 @@
                   <md-content>
                     <md-list>
                       <md-divider></md-divider>
-                      <md-list-item class="md-2-line" ng-repeat="streamer in streamersData | orderBy : streamer.channelData.name" ng-class="streamer.stream == null ? 'offline' : 'online'">
-                        <img class="md-avatar" ng-src="{{ streamer.channelData.logo }}" />
+                      <md-list-item class="md-2-line" ng-repeat="streamer in streamersData | orderBy : ['stream', 'name']" ng-class="streamer.stream == null || streamer.stream == 'closed' ? 'offline' : 'online'" ng-show="streamer.online == filterList.selected || filterList.selected == 'all'">
+                        <a ng-href="{{ streamer.url }}"><img class="md-avatar" ng-src="{{ streamer.logo }}" /></a>
                         <div class="md-list-item-text">
-                          <h3>{{ streamer.channelData.name }}</h3>
-                          <p>{{ streamer.stream == null ? "Offline" : streamer.stream.game + " : " + streamer.stream.channel.status }} </p>
+                          <a ng-href="{{ streamer.url }}" style="text-decoration: none"><h3>{{ streamer.name }}</h3></a>
+                          <p>{{ streamer.stream == null ? "Offline" : streamer.stream == "closed" ? "Account closed" : streamer.stream.game + " : " + streamer.stream.channel.status }} </p>
                         </div>
                         <md-divider></md-divider>
                       </md-list-item>

@@ -10,8 +10,12 @@
   background: #757575;
 }
 
-md-list md-list-item.md-2-line .md-list-item-text p, md-list md-list-item.md-2-line .md-list-item-text h3{
+md-list md-list-item.md-2-line .md-list-item-text p {
   color: white;
+}
+
+md-list md-list-item.md-2-line .md-list-item-text h3 {
+  color: #B0BEC5;
 }
 
 .md-no-sticky {
